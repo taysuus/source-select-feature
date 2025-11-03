@@ -1,0 +1,11 @@
+{
+  "name": "source-select-feature",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "esbuild src/source-select-feature.js --bundle --minify --format=esm --outfile=www/source-select-feature/source-select-feature.js"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0",
+    "lit": "^3.1.0"
+  }
+}

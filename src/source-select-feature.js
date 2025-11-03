@@ -1,0 +1,88 @@
+import { LitElement, html, css } from "lit";
+
+const supportsMediaPlayerSourceSelectCardFeature = (stateObj) => {
+  const [domain] = stateObj.entity_id.split(".");
+  return domain === "media_player";
+};
+
+class MediaPlayerSourceSelectFeature extends LitElement {
+  static get properties() {
+    return {
+      hass: undefined,
+      config: undefined,
+      stateObj: undefined,
+    };
+  }
+
+  static getStubConfig() {
+    return {
+      type: "custom:media-player-source-select-feature",
+      label: "Select",
+    };
+  }
+
+  setConfig(config) {
+    if (!config) {
+      throw new Error("Invalid configuration");
+    }
+    this.config = config;
+  }
+
+  render() {
+    if (
+      !this.config ||
+      !this.hass ||
+      !this.stateObj ||
+      !supportsMediaPlayerSourceSelectCardFeature(this.stateObj)
+    ) {
+      return null;
+    }
+
+    const sources = this.stateObj.attributes.source_list || [];
+    const current = this.stateObj.attributes.source;
+
+    return html`
+      <ha-select
+        @selected=${this._handleChange}
+        .value=${current || ""}
+        label="Source"
+        outlined
+        style="width: 100%;"
+      >
+        ${sources.map(
+          (src) => html`<mwc-list-item value=${src}>${src}</mwc-list-item>`
+        )}
+      </ha-select>
+    `;
+  }
+
+  async _handleChange(ev) {
+    const newSource = ev.target.value;
+    if (!newSource) return;
+
+    await this.hass.callService("media_player", "select_source", {
+      entity_id: this.stateObj.entity_id,
+      source: newSource,
+    });
+  }
+
+  static get styles() {
+    return css`
+      ha-select {
+        --mdc-theme-primary: var(--tile-color);
+      }
+    `;
+  }
+}
+
+customElements.define(
+  "media-player-source-select-feature",
+  MediaPlayerSourceSelectFeature
+);
+
+window.customCardFeatures = window.customCardFeatures || [];
+window.customCardFeatures.push({
+  type: "media-player-source-select-feature",
+  name: "Source Select",
+  supported: supportsMediaPlayerSourceSelectCardFeature,
+});

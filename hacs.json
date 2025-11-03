@@ -1,0 +1,6 @@
+{
+  "name": "Media Player Source Select Feature",
+  "render_readme": true,
+  "filename": "source-select-feature.js",
+  "type": "lovelace"
+}
