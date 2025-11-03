@@ -66,7 +66,13 @@ class MediaPlayerSourceSelectFeature extends LitElement {
   }
 
   static get styles() {
-    return css``;
+    return css`
+      ha-control-select-menu {
+        --control-select-menu-border-radius: var(--feature-border-radius, 12px);
+        --control-select-menu-height: var(--feature-height, 42px);
+        width: 100%;
+      }
+    `;
   }
 }
 
