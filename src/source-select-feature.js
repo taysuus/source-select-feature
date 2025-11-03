@@ -46,8 +46,7 @@ class MediaPlayerSourceSelectFeature extends LitElement {
         @selected=${this._handleChange}
         .label="Source"
         .value=${current}
-        fixedMenuPosition
-        naturalMenuWidth
+        .showArrow=${true}
       >
         ${sources.map(
           (src) => html`<ha-list-item .value=${src}>${src}</ha-list-item>`
