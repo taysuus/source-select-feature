@@ -6,11 +6,7 @@ A simple custom **Tile Card Feature** for Home Assistant that adds a dropdown me
 
 ## Installation (via HACS)
 
-1. Go to **HACS → Frontend → + Explore & Download Repositories**
-2. Search for **Source Select Feature**
-3. Install it
-4. Add the resource automatically, or manually in **Settings → Dashboards → Resources**:
-   ```yaml
-   url: /hacsfiles/source-select-feature/source-select-feature.js
-   type: module
-   ```
+1. Go to **HACS → Frontend → Custom repositories → Add repository**
+2. URL: `https://github.com/taysuus/source-select-feature`
+3. Category: **Dashboard**
+4. Click **Add**, then search for **Source Select Tile Feature** and install.
