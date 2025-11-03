@@ -42,17 +42,17 @@ class MediaPlayerSourceSelectFeature extends LitElement {
     const current = this.stateObj.attributes.source;
 
     return html`
-      <ha-select
+      <ha-control-select-menu
         @selected=${this._handleChange}
-        .value=${current || ""}
-        label="Source"
-        outlined
-        style="width: 100%;"
+        .label="Source"
+        .value=${current}
+        fixedMenuPosition
+        naturalMenuWidth
       >
         ${sources.map(
-          (src) => html`<mwc-list-item value=${src}>${src}</mwc-list-item>`
+          (src) => html`<ha-list-item .value=${src}>${src}</ha-list-item>`
         )}
-      </ha-select>
+      </ha-control-select-menu>
     `;
   }
 
@@ -67,11 +67,7 @@ class MediaPlayerSourceSelectFeature extends LitElement {
   }
 
   static get styles() {
-    return css`
-      ha-select {
-        --mdc-theme-primary: var(--tile-color);
-      }
-    `;
+    return css``;
   }
 }
 
