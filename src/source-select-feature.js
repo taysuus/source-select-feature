@@ -1,11 +1,11 @@
 import { LitElement, html, css } from "lit";
 
-export const atLeastHaVersion(
+const atLeastHaVersion = (
   version,
   major,
   minor,
   patch?
-) {
+) => {
   const [haMajor, haMinor, haPatch] = version.split(".", 3);
 
   return (
