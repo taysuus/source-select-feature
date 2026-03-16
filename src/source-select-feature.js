@@ -4,7 +4,7 @@ const atLeastHaVersion = (
   version,
   major,
   minor,
-  patch?
+  patch
 ) => {
   const [haMajor, haMinor, haPatch] = version.split(".", 3);
 
