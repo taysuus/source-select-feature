@@ -73,7 +73,7 @@ class MediaPlayerSourceSelectFeature extends LitElement {
             value: src,
             label: src,
           }))}
-          @wa-select=${this._selectChanged}
+          @wa-select=${this._handleChange}
         ></ha-control-select-menu>
       `;
     }
