@@ -1,11 +1,11 @@
 import { LitElement, html, css } from "lit";
 
-export const atLeastHaVersion = (
+export const atLeastHaVersion(
   version,
   major,
   minor,
   patch?
-) => {
+) {
   const [haMajor, haMinor, haPatch] = version.split(".", 3);
 
   return (
@@ -95,7 +95,7 @@ class MediaPlayerSourceSelectFeature extends LitElement {
   async _handleChange(ev) {
     let newSource;
     if (atLeastHaVersion(this.hass.connection.haVersion, 2026, 3)) {
-      value = ev.detail.item.value;
+      newSource = ev.detail.item.value;
     } else {
       newSource = ev.target.value;
     }
