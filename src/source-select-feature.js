@@ -1,5 +1,26 @@
 import { LitElement, html, css } from "lit";
 
+export const atLeastHaVersion = (
+  version: string,
+  major: number,
+  minor: number,
+  patch?: number
+): boolean => {
+  const [haMajor, haMinor, haPatch] = version.split(".", 3);
+
+  return (
+    Number(haMajor) > major ||
+    (Number(haMajor) === major &&
+      (patch === undefined
+        ? Number(haMinor) >= minor
+        : Number(haMinor) > minor)) ||
+    (patch !== undefined &&
+      Number(haMajor) === major &&
+      Number(haMinor) === minor &&
+      Number(haPatch) >= patch)
+  );
+};
+
 const supportsMediaPlayerSourceSelectCardFeature = (stateObj) => {
   const [domain] = stateObj.entity_id.split(".");
   return domain === "media_player";
@@ -41,11 +62,27 @@ class MediaPlayerSourceSelectFeature extends LitElement {
     const sources = this.stateObj.attributes.source_list || [];
     const current = this.stateObj.attributes.source;
 
+    if (atLeastHaVersion(this.hass.connection.haVersion, 2026, 3)) {
+      return html`
+        <ha-control-select-menu
+          show-arrow
+          hide-label
+          .hass=${this.hass}
+          .value=${current ?? ""}
+          .options=${sources.map((src) => ({
+            value: src,
+            label: src,
+          }))}
+          @wa-select=${this._selectChanged}
+        ></ha-control-select-menu>
+      `;
+    }
+
     return html`
       <ha-control-select-menu
         @selected=${this._handleChange}
         .label="Source"
-        .value=${current}
+        .value=${current ?? ""}
         .showArrow=${true}
       >
         ${sources.map(
@@ -56,7 +93,12 @@ class MediaPlayerSourceSelectFeature extends LitElement {
   }
 
   async _handleChange(ev) {
-    const newSource = ev.target.value;
+    let newSource: string | undefined;
+    if (atLeastHaVersion(this.hass.connection.haVersion, 2026, 3)) {
+      value = ev.detail.item.value;
+    } else {
+      newSource = ev.target.value;
+    }
     if (!newSource) return;
 
     await this.hass.callService("media_player", "select_source", {
